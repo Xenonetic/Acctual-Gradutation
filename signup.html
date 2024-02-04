@@ -6,61 +6,68 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="login.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="signup.css">
+    <title>Sign Up</title>
 </head>
 <body>
   <div class="background">
     <div class="shape"></div>
     <div class="shape"></div>
 </div>
-<form id="loginForm">
-    <h3>Login</h3>
+<form id="signupForm">
+    <h3>Sign Up</h3>
 
     <label for="username">Username</label>
-    <input type="text" placeholder="Email" id="username" required>
+    <input type="text" placeholder="Username" id="username" required>
+
+    <label for="Email">Email</label>
+    <input type="Email" placeholder="Email" id="Email" required>
 
     <label for="password">Password</label>
     <input type="password" placeholder="Password" id="password" required>
+    
+    
+    <!-- Add additional fields for signup -->
+    <label for="confirmPassword">Confirm Password</label>
+    <input type="password" placeholder="Confirm Password" id="confirmPassword" required>
 
-    <button type="submit" onclick="validateAndRedirect()">Log In</button>
+    <button type="submit" onclick="validateAndRedirect()">Sign Up</button>
     <div class="social">
       <div class="go"><i class="fab fa-google"></i>  Google</div>
       <div class="fb"><i class="fab fa-linkedin"></i>  LinkedIn</div>
-      
     </div>
-    <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+    
 </form>
     
 </body>
 <script>
-    document.getElementById("loginForm").addEventListener("submit", function(event) {
+    document.getElementById("signupForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
     var usernameInput = document.getElementById('username').value;
     var passwordInput = document.getElementById('password').value;
+    var confirmPasswordInput = document.getElementById('confirmPassword').value;
 
-    
-    fetch('http://localhost:5500/login', {
+    // Perform additional validation if needed for signup
+
+    fetch('http://localhost:5500/signup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: `username=${usernameInput}&password=${passwordInput}`,
+        body: `username=${usernameInput}&password=${passwordInput}&confirmPassword=${confirmPasswordInput}`,
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Invalid username or password');
+            throw new Error('Error signing up');
         }
         return response.json();
     })
     .then(data => {
-      
-        alert('Login successful');
+        alert('Sign Up successful');
         window.location.href = 'dashboard.html';
     })
     .catch(error => {
-        
         alert(error.message);
     });
 });

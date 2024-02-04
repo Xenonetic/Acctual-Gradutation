@@ -1,1 +1,81 @@
-    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Builder</title>
+    <link rel="stylesheet" href="forms.css">
+</head>
+<body>
+    <div id="form-builder">
+        <h2>Create Your Form</h2>
+        <div id="form-preview"></div>
+        <button onclick="addTextField()">Add Text Field</button>
+        <button onclick="addRadioField()">Add Radio Field</button>
+        <button onclick="addCheckboxField()">Add Checkbox Field</button>
+        <button onclick="submitForm()">Submit Form</button>
+    </div>
+
+   
+</body>
+
+<script>
+    let formFields = [];
+
+function addTextField() {
+    const textField = createField("text");
+    formFields.push(textField);
+    updateFormPreview();
+}
+
+function addRadioField() {
+    const radioField = createField("radio", ["Option 1", "Option 2", "Option 3"]);
+    formFields.push(radioField);
+    updateFormPreview();
+}
+
+function addCheckboxField() {
+    const checkboxField = createField("checkbox", ["Option 1", "Option 2", "Option 3"]);
+    formFields.push(checkboxField);
+    updateFormPreview();
+}
+
+function createField(type, options = []) {
+    return { type, options };
+}
+
+function updateFormPreview() {
+    const formPreview = document.getElementById("form-preview");
+    formPreview.innerHTML = "";
+
+    formFields.forEach((field, index) => {
+        const fieldElement = document.createElement("div");
+        fieldElement.className = "field";
+
+        if (field.type === "text") {
+            fieldElement.innerHTML = `<label for="field-${index}">Text Field:</label>
+                                      <input type="text" id="field-${index}" name="field-${index}">`;
+        } else if (field.type === "radio" || field.type === "checkbox") {
+            const options = field.options.map((option, optionIndex) => {
+                return `<input type="${field.type}" id="field-${index}-${optionIndex}" name="field-${index}">
+                        <label for="field-${index}-${optionIndex}">${option}</label>`;
+            }).join("");
+
+            fieldElement.innerHTML = `<label>${field.type === "radio" ? "Radio" : "Checkbox"} Field:</label>
+                                      ${options}`;
+        }
+
+        formPreview.appendChild(fieldElement);
+    });
+}
+
+function submitForm() {
+    // Here you can send the formFields data to the backend for further processing.
+    console.log(formFields);
+}
+
+</script>
+</html>
+
+
+
