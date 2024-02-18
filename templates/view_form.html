@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">
+    <title>View Form</title>
+
+    <style>
+       
+        #form-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .name-div {
+            margin-bottom: 20px; /* Adjust as needed */
+        }
+        .extra-buttons {
+    position: absolute;
+    top: 225px; /* Adjust as needed */
+    left: calc(50% - 160px);
+    margin-left: -30px;
+    
+    display: none; /* Initially hide the extra buttons */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 10px;
+    display: flex; /* Display extra buttons as flex items */
+    gap: 30px;
+}
+
+.add-form-button button {
+    background-color: #00bcd4; /* Background color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px; /* Padding */
+    cursor: pointer; /* Cursor style */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.add-form-button button:hover {
+    background-color: #0097a7; /* Darker background color on hover */
+}
+        .extra-buttons button {
+            background-color: #00bcd4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 1px 30px;
+            cursor: pointer;
+        }
+        
+
+        .radio-container {
+    margin: 10px 0;
+}
+
+.radio-container input[type="radio"] {
+    margin-right: 5px;
+}
+
+.add-more-options-button {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.add-more-options-button button {
+    background-color: #00bcd4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.question-container {
+            background-color: white; /* White background */
+            border: 1px solid #ccc; /* Border */
+            border-radius: 5px; /* Rounded corners */
+            padding: 10px; /* Padding */
+            margin-bottom: 20px; /* Spacing between containers */
+        }
+
+        /* Styles for text fields */
+        .input-div input[type="text"] {
+            width: 100%; /* Make text fields fill their container */
+            padding: 8px; /* Padding around the text fields */
+            font-size: 16px; /* Font size */
+            border: 1px solid #ccc; /* Border */
+            border-radius: 5px; /* Border radius */
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
+            margin-top: 5px; /* Margin above the text fields */
+        }
+
+        /* Styles for radio buttons */
+        .radio-container input[type="radio"] {
+            margin-right: 5px; /* Spacing between radio buttons and labels */
+        }
+
+        .radio-container label {
+            font-size: 16px; /* Font size of radio button labels */
+            margin-right: 10px; /* Spacing between radio buttons and labels */
+        }
+
+        .form {
+            height: auto;
+            width: 600px;
+            margin: auto;
+        }
+
+        .title-div {
+            height: 150px;
+            width: 600px;
+            background-color: #fdfefe;
+            margin: auto;
+            margin-top: 15px;
+            border-radius: 8px;
+            border-top: 8px solid #6703c4;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .name-div,
+        .input-div {
+            width: 600px; /* Adjusted to match the width of the form */
+            background-color: #fdfefe;
+            margin: 15px auto; /* Center horizontally */
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .name {
+            font-size: 15px;
+        }
+
+        .input-div input[type="text"] {
+            width: calc(100% - 10px); /* Adjusted to match the width of the parent container */
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        .radio-container {
+            margin: 10px 0;
+        }
+
+        .radio-container input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .radio-container label {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .question {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        button[type="submit"] {
+            background-color: #6703c4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #520294;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="form">
+        <div class="title-div">
+            <h1>{{ form_data.title }}</h1>
+        </div>
+        <form id="responseForm" method="POST">
+            {% for question in form_data.questions %}
+            <div class="question">
+                <div class="radio-container">
+                    {% if question.inputs %}
+                        <p>{{ question.title }}</p>
+                        <input type="text" name="question{{ loop.index0 }}"><br>
+                    {% elif question.options %}
+                        <p>{{ question.title }}</p>
+                        {% for option in question.options %}
+                            <label>
+                                <input type="radio" name="question{{ loop.index0 }}" value="{{ option }}">
+                                {{ option }}
+                            </label><br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+            <button type="submit">Submit Response</button>
+        </form>
+    </div>
+        
+    <script>
+
+
+
+document.getElementById('responseForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var formData = new FormData(this);
+    var response = {};
+    formData.forEach(function(value, key){
+        response[key] = value;
+    });
+
+    const formId = '{{ form_data.form_id }}';
+const url = `/respond/${formId}`;
+
+fetch(url, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(response)
+})
+    .then(response => {
+        if (!response.ok) {
+            if (response.status === 405) {
+                // Redirect to the form page with an error message
+                window.location.href = "{{ url_for('view_form_page', form_id=form_id) }}?error=method_not_allowed";
+            } else {
+                throw new Error('Error: ' + response.status);
+            }
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+        alert(data.message);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while submitting the response.');
+    });
+});
+        // Get all radio button groups
+        const radioGroups = document.querySelectorAll('.question-div input[type="radio"]');
+
+        // Add event listener to each radio button group
+        radioGroups.forEach(radioGroup => {
+            radioGroup.addEventListener('click', () => {
+                // Uncheck all radio buttons in the group except the one clicked
+                radioGroup.parentNode.parentNode.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    if (radio !== radioGroup) {
+                        radio.checked = false;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

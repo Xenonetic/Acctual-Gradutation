@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="Dashboard.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Dashboard.css') }}">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Document</title>
@@ -13,7 +13,7 @@
     <div class="sidebar close">
         <div class="logo-details">
           <i class='bx bxl-c-plus-plus'></i>
-          <span class="logo_name">SentiPlus</span>
+          <span class="logo_name">Insightify</span>
         </div>
         <ul class="nav-links">
           <li>
@@ -75,18 +75,10 @@
           </li>
           <li>
             <div class="iocn-link">
-              <a href="#">
+              <a href="{{ url_for('analysis') }}">
                 <i class='bx bx-plug' ></i>
                 <span class="link_name">Analyze Data</span>
               </a>
-              <i class='bx bxs-chevron-down arrow' ></i>
-            </div>
-            <ul class="sub-menu">
-              <li><a class="link_name" href="#">Analyze Data</a></li>
-              <li><a href="#">#</a></li>
-              <li><a href="#">#</a></li>
-              <li><a href="#">#</a></li>
-            </ul>
           </li>
           
           <li>
@@ -101,16 +93,18 @@
 
           
           <li>
-        <div class="profile-details">
-          <div class="profile-content">
-           
+            <div class="profile-details">
+              <div class="profile-content">
+                  
+              </div>
+              <div class="name-job">
+                  
+                  <div class="profile_name">{{ current_user.username }}</div>
+              </div>
+              <a href="{{ url_for('logout') }}" class="logout-btn">
+                  <i class='bx bx-log-out'></i> 
+              </a>
           </div>
-          <div class="name-job">
-            <div class="profile_name">User</div>
-            
-          </div>
-          <i class='bx bx-log-out' ></i>
-        </div>
       </li>
     </ul>
       </div>
@@ -120,37 +114,27 @@
           <div class="my-forms-box">
             <h2>My Forms</h2>
             <ul class="form-list">
-              <li>
-                <a href="#">
-                  <i class="bx bx-file"></i>
-                  <span>My Awesome Form</span>
-                  <span class="submissions">10 submissions</span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i class="bx bx-file"></i>
-                  <span>Another Great Form</span>
-                  <span class="submissions">5 submissions</span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i class="bx bx-file"></i>
-                  <span>Another Great Form</span>
-                  <span class="submissions">5 submissions</span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i class="bx bx-file"></i>
-                  <span>Great Form</span>
-                  <span class="submissions">20   submissions</span>
-                </a>
-              </li>
-
-            </ul>
-            <a href="forms.html" class="create-form-btn">Create New Form</a>
+  {% for form in forms %}
+    <li>
+      <a href="{{ url_for('view_form', form_id=form._id) }}">
+        <i class="bx bx-file"></i>
+        <span>
+          {% if 'form_data' in form %}
+            {{ form.form_data['title'] }}
+          {% else %}
+            {{ form.title }}
+          {% endif %}
+        </span>
+        {% if form.questions %}
+          <span class="submissions">{{ form.questions|length }} submissions</span>
+        {% else %}
+          <span class="submissions">No questions available</span>
+        {% endif %}
+      </a>
+    </li>
+  {% endfor %}
+</ul>
+            <a href="{{ url_for('forms') }}" class="create-form-btn">Create New Form</a>
           </div>
           
           <div class="total-responses-box">

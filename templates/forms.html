@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='forms.css') }}">    
+    <style>
+       
+        #form-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .name-div {
+            margin-bottom: 20px; /* Adjust as needed */
+        }
+        .extra-buttons {
+    position: absolute;
+    top: 225px; /* Adjust as needed */
+    left: calc(50% - 160px);
+    margin-left: -30px;
+    
+    display: none; /* Initially hide the extra buttons */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 10px;
+    display: flex; /* Display extra buttons as flex items */
+    gap: 30px;
+}
+
+.add-form-button button {
+    background-color: #00bcd4; /* Background color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px; /* Padding */
+    cursor: pointer; /* Cursor style */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.add-form-button button:hover {
+    background-color: #0097a7; /* Darker background color on hover */
+}
+        .extra-buttons button {
+            background-color: #00bcd4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 1px 30px;
+            cursor: pointer;
+        }
+        
+
+        .radio-container {
+    margin: 10px 0;
+}
+
+.radio-container input[type="radio"] {
+    margin-right: 5px;
+}
+
+.add-more-options-button {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.add-more-options-button button {
+    background-color: #00bcd4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.save-button {
+    background-color: #103476; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    outline: none;
+}
+
+.save-button:hover {
+    background-color: #45a049; /* Darker green */
+}
+
+.save-button:active {
+    background-color: #367c37; /* Even darker green */
+    transform: translateY(2px);
+    transition: transform 0.1s ease;
+}
+
+
+    </style>
+    <script>
+        let addButtonMargin = 0;
+
+function addForm() {
+    var formContainer = document.getElementById('form-container');
+    if (!formContainer) {
+        formContainer = document.createElement('div');
+        formContainer.id = 'form-container';
+        document.body.appendChild(formContainer);
+    }
+
+    var form = document.createElement('div');
+    form.className = 'name-div';
+    form.innerHTML = `
+        <div class="name" ondblclick="editText(event)">Question<span class="required">*</span></div>
+        <div class="input-div"><input type="text" name="answer" placeholder="Your answer"></div>
+    `;
+    formContainer.appendChild(form);
+
+    addButtonMargin += 100;
+    document.querySelector('.add-form-button').style.marginRight = addButtonMargin + 'px';
+}
+
+function addMCQForm() {
+    var formContainer = document.getElementById('form-container');
+    if (!formContainer) {
+        formContainer = document.createElement('div');
+        formContainer.id = 'form-container';
+        document.body.appendChild(formContainer);
+    }
+
+    var form = document.createElement('div');
+    form.className = 'name-div';
+    form.innerHTML = `
+        <div class="name" ondblclick="editText(event)">Question<span class="required">*</span></div>
+        <div class="input-div">
+            <div class="radio-container">
+                <input type="radio" name="option" id="option1" />
+                <label for="option1" ondblclick="editRadioLabel(event)">Radio Button 1</label>
+            </div>
+           
+        </div>
+        <div class="add-more-options-button">
+            <button onclick="addRadioButtons(this)">Add More Options</button>
+        </div>
+    `;
+    formContainer.appendChild(form);
+
+    addButtonMargin += 100;
+    document.querySelector('.add-form-button').style.marginRight = addButtonMargin + 'px';
+}
+
+function editText(event) {
+    var target = event.target;
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.value = target.textContent.replace('*', '');
+    target.textContent = '';
+    target.appendChild(input);
+    input.focus();
+    input.addEventListener('blur', function() {
+        target.textContent = input.value;
+        if (target.textContent.trim() !== '') {
+            target.innerHTML += '<span class="required">*</span>';
+        }
+    });
+}
+
+function editRadioLabel(event) {
+    var target = event.target;
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.value = target.textContent;
+    target.textContent = '';
+    target.appendChild(input);
+    input.focus();
+    input.addEventListener('blur', function() {
+        target.textContent = input.value;
+    });
+}
+
+function editTitle() {
+            var title = document.getElementById('form-title');
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.value = title.textContent;
+            title.textContent = '';
+            title.appendChild(input);
+            input.focus();
+            input.addEventListener('blur', function() {
+                title.textContent = input.value;
+            });
+        }
+
+function addRadioButtons(buttonElement) {
+    const formContainer = buttonElement.closest('.name-div').querySelector('.input-div');
+    const radioContainer = document.createElement('div');
+    radioContainer.className = 'radio-container';
+    const radioInput = document.createElement('input');
+    radioInput.type = 'radio';
+    radioInput.name = 'option';
+    radioContainer.appendChild(radioInput);
+
+    const label = document.createElement('label');
+    label.innerText = 'Radio Button ' + (formContainer.querySelectorAll('.radio-container').length + 1);
+    label.setAttribute('for', 'option' + (formContainer.querySelectorAll('.radio-container').length + 1));
+    label.addEventListener('dblclick', editRadioLabel);
+    radioContainer.appendChild(label);
+
+    formContainer.appendChild(radioContainer);
+}
+
+function showButtons() {
+    var extraButtons = document.querySelector('.extra-buttons');
+    var addButton = document.getElementById('add-form-button');
+    extraButtons.style.display = extraButtons.style.display === 'flex' ? 'none' : 'flex';
+}
+
+window.addEventListener('load', function() {
+    document.querySelector('.extra-buttons').style.display = 'none';
+});
+
+function saveForm() {
+    const formContainer = document.getElementById('form-container');
+    const formData = {
+        _id: '', // This will be generated by the server
+        form_id: '', // This will be generated by the server
+        title: document.getElementById('form-title').textContent.trim(),
+        questions: []
+    };
+
+    const questionDivs = formContainer.querySelectorAll('.name-div');
+    questionDivs.forEach((questionDiv) => {
+        const question = {};
+        const questionTitle = questionDiv.querySelector('.name');
+        question.title = questionTitle.textContent.trim().replace('*', ''); // Remove asterisk
+
+        // Check if the question has inputs
+        const questionInputs = questionDiv.querySelectorAll('input[type="text"]');
+        if (questionInputs.length > 0) {
+            question.inputs = [];
+            questionInputs.forEach((input) => {
+                question.inputs.push(input.value.trim());
+            });
+        }
+
+        // Check if the question has options (radio buttons)
+        const radioContainers = questionDiv.querySelectorAll('.radio-container');
+        if (radioContainers.length > 0) {
+            question.options = [];
+            radioContainers.forEach((radioContainer) => {
+                const optionLabel = radioContainer.querySelector('label');
+                question.options.push(optionLabel.textContent.trim());
+            });
+        }
+
+        formData.questions.push(question);
+    });
+
+    // Send form data to Flask backend
+    fetch('/save_form', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json' // Add this line
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        alert(data.message);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while saving the form.');
+    });
+}
+
+
+    </script>
+</head>
+<body>
+
+    <div class="form">
+        <div class="title-div">
+           
+            <h1  id="form-title" ondblclick="editTitle()">Untitled</h1>
+        </div>
+
+        <div class="add-form-button">
+            <button onclick="showButtons()" id="add-form-button">Add Form</button>
+            <div class="extra-buttons">
+                <button onclick="addForm()">Text Field</button>
+                <button onclick="addMCQForm()">MCQ Field</button>
+                <button onclick="clearForm()">Clear Form</button>
+            </div>
+        </div>
+
+        <div id="form-container"></div>
+
+    </div>
+    <button onclick="saveForm()" class="save-button">Save Form</button>
+
+    
+
+    <script>
+     window.addEventListener('load', function() {
+            // Hide the extra buttons when the page loads
+            document.querySelector('.extra-buttons').style.display = 'none';
+
+            // Retrieve and populate form data from localStorage
+            const formData = localStorage.getItem('formData');
+            if (formData) {
+                document.getElementById('form-container').innerHTML = formData;
+            }
+        });
+
+        window.addEventListener('beforeunload', function() {
+            // Save form data to localStorage before leaving the page
+            const formContainer = document.getElementById('form-container');
+            localStorage.setItem('formData', formContainer.innerHTML);
+        });
+        function clearForm() {
+            document.getElementById('form-title').textContent = 'Untitled';
+            document.getElementById('form-container').innerHTML = ''; // Clear form content
+        }
+function showButtons() {
+    var extraButtons = document.querySelector('.extra-buttons');
+    var addButton = document.getElementById('add-form-button');
+    extraButtons.style.display = extraButtons.style.display === 'flex' ? 'none' : 'flex'; // Toggle display
+}
+    </script>
+
+</body>
+</html>
+    

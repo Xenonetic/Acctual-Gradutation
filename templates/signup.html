@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">
+    <title>Sign Up</title>
+</head>
+<body>
+  <div class="background">
+    <div class="shape"></div>
+    <div class="shape"></div>
+</div>
+<form id="signupForm" method="post" action="{{ url_for('signup') }}">
+  <h3>Sign Up</h3>
+
+  <label for="username">Username</label>
+  <input type="text" placeholder="Username" name="username" id="username" required>
+
+  <label for="Email">Email</label>
+  <input type="Email" placeholder="Email" name="Email" id="Email" required>
+
+  <label for="password">Password</label>
+  <input type="password" placeholder="Password" name="password" id="password" required>
+  
+  <!-- Add additional fields for signup -->
+  <label for="confirmPassword">Confirm Password</label>
+  <input type="password" placeholder="Confirm Password" name="confirmPassword" id="confirmPassword" required>
+
+  <button type="submit">Sign Up</button>
+  <div class="social">
+    <div class="go"><i class="fab fa-google"></i>  Google</div>
+    <div class="fb"><i class="fab fa-linkedin"></i>  LinkedIn</div>
+  </div>
+</form>
+
+    
+</body>
+
+</html>

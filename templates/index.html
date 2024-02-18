@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,7 @@
 <body>
     <header class="header">
         <div class="brand-box">
-            <span class="brand">SentiPlus</span>
+            <span class="brand">Insightify</span>
         </div>
         
         <div class="text-box">
@@ -22,21 +22,21 @@
                 <span class="heading-primary-main">The world's Number #1 Forms tool</span>
                 <span class="heading-primary-sub"></span>
             </h1>
-            <a href="login_page.html" class="btn btn-white btn-animated">Start a form!</a>
+            <a href="{{ url_for('login') }}" class="btn btn-white btn-animated">Start a form!</a>
         </div>
     </header>
 
     <section class="alternate-section">
         <div class="image-section">
          
-            <img src="senti.png" alt="Image 1">
+            <img src="{{ url_for('static', filename='senti.png') }}"alt="Image 1">
         </div>
         <div class="text-section">
             <h1>
-                Welcome to SentiPlus<br>your go-to platform <br>for creating and analyzing forms with cutting-edge features.
+                Welcome to Insightify<br>your go-to platform <br>for creating and analyzing forms with cutting-edge features.
             </h1>
             <p>
-                Gain deep insights from your forms using advanced analytics, including sentiment analysis and domain knowledge extraction. SentiPlus goes beyond basic form creation, offering a comprehensive solution for understanding the data you collect.
+                Gain deep insights from your forms using advanced analytics, including sentiment analysis and domain knowledge extraction. Insightify goes beyond basic form creation, offering a comprehensive solution for understanding the data you collect.
             </p>
         </div>
     </section>
@@ -44,7 +44,7 @@
     <section class="alternate-section">
         <div class="text-section">
             <h1>
-                With SentiPlus, you can easily create forms for surveys, feedback, or any data collection purpose.
+                With Insightify, you can easily create forms for surveys, feedback, or any data collection purpose.
             </h1>
             <p>
                 Harness the power of sentiment analysis to understand the emotions conveyed in responses. Extract valuable domain knowledge from your data to uncover trends and patterns that drive informed decision-making.Our user-friendly interface ensures a seamless form creation experience.
@@ -52,7 +52,7 @@
         </div>
         <div class="image-section">
             
-            <img src="senti2.png" alt="Image 2">
+            <img src="{{ url_for('static', filename='senti2.png') }}" alt="Image 1">
         </div>
     </section>
 

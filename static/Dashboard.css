@@ -253,14 +253,16 @@
 
 
 .my-forms-box {
-    background-color: #fff;
-    border-radius: 20px;
-    padding: 10px;
-    margin: 10px 0;
-    position: absolute;
-    bottom: 0;
-    left:2;
-  }
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 10px;
+  margin: 10px 0;
+  position: absolute;
+  bottom: 0;
+  left: 2px; /* Corrected the left value */
+  max-height: 400px; /* Set a maximum height for the container */
+  overflow-y: auto; /* Enable vertical scrolling when content overflows */
+}
   
   .form-list {
     list-style: none;
@@ -400,4 +402,21 @@
       height: 80px; /* Adjust as needed */
       margin: 0 2%; /* Adjust as needed */
   }
+}
+
+
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

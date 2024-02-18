@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='analysis.css') }}">
+    <title>Analysis</title>
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            padding: 20px;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Style the navigation bar */
+        nav {
+            background-color: #333;
+            padding: 10px;
+        }
+
+        /* Style the navigation bar links */
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        /* Style the navigation bar link when it's active */
+        nav a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Style the slide container */
+        .slide {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Style the slide list items */
+        .slide li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        /* Style the slide list item when it's active */
+        .slide li a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Style the charts container */
+        #charts-container {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        /* Style the chart container */
+        .chart-container {
+            display: inline-block;
+            width: 300px;
+            height: 300px;
+            margin: 10px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style the toggle button */
+        #toggle-analysis {
+            background-color: #614caf;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        #toggle-analysis:hover {
+            background-color: #393381;
+        }
+
+        /* Style the dropdown scrollbar */
+        .slide::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .slide::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .slide::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 5px;
+        }
+
+        .slide::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <label for="touch"><span>Forms</span></label>               
+        <input type="checkbox" id="touch"> 
+        <ul class="slide">
+            {% for form in forms %}
+                {% if 'form_data' in form %}
+                    <li><a href="{{ url_for('analysis', form_id=form['_id']) }}">{{ form.form_data['title'] }}</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('analysis', form_id=form['_id']) }}">{{ form.title }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+
+    <!-- Container for charts with border and box shadow -->
+    <div id="charts-container">
+        <!-- Charts will be added here dynamically -->
+    </div>
+
+    <!-- Button to toggle analysis type -->
+    <button id="toggle-analysis" onclick="toggleAnalysis()">Toggle Analysis Type</button>
+
+    <script>
+        // Function to generate fake data for sentiment analysis
+        function generateFakeSentimentData() {
+            // Generate random data for sentiment analysis
+            return {
+                'Positive': Math.floor(Math.random() * 100),
+                'Neutral': Math.floor(Math.random() * 100),
+                'Negative': Math.floor(Math.random() * 100)
+            };
+        }
+
+        // Function to generate fake data for topic modeling
+        function generateFakeTopicModelingData() {
+            // Generate random data for topic modeling
+            return {
+                'Topic 1': Math.floor(Math.random() * 100),
+                'Topic 2': Math.floor(Math.random() * 100),
+                'Topic 3': Math.floor(Math.random() * 100),
+                'Topic 4': Math.floor(Math.random() * 100),
+                'Topic 5': Math.floor(Math.random() * 100)
+            };
+        }
+
+        // Function to generate fake data for MCQ analysis
+        function generateFakeMCQData() {
+            // Generate random data for MCQ analysis
+            return {
+                'Option A': Math.floor(Math.random() * 100),
+                'Option B': Math.floor(Math.random() * 100),
+                'Option C': Math.floor(Math.random() * 100),
+                'Option D': Math.floor(Math.random() * 100)
+            };
+        }
+
+        // Function to create charts
+        function createCharts() {
+    var analysisType = 'open-ended'; // Default to open-ended analysis
+    var chartsContainer = document.getElementById('charts-container');
+
+    // Function to toggle between analysis types
+    window.toggleAnalysis = function() {
+        if (analysisType === 'open-ended') {
+            analysisType = 'closed-ended';
+        } else if (analysisType === 'closed-ended') {
+            analysisType = 'mcq';
+        } else {
+            analysisType = 'open-ended';
+        }
+        createCharts(); // Re-generate charts based on the new analysis type
+    };
+
+    // Clear previous charts
+    chartsContainer.innerHTML = '';
+
+    // Generate and display charts based on the analysis type
+    if (analysisType === 'open-ended') {
+        var sentimentData = generateFakeSentimentData();
+        var topicModelingData = generateFakeTopicModelingData();
+
+        // Create and display sentiment analysis chart
+        createChart('Sentiment Analysis', Object.keys(sentimentData), Object.values(sentimentData), 'sentiment-chart');
+
+        // Create and display topic modeling chart
+        createChart('Topic Modeling', Object.keys(topicModelingData), Object.values(topicModelingData), 'topic-modeling-chart');
+    } else if (analysisType === 'closed-ended') {
+        // Placeholder for closed-ended analysis charts
+        chartsContainer.innerHTML = '<p>Closed-ended analysis charts will be displayed here.</p>';
+    } else if (analysisType === 'mcq') {
+        var mcqData = generateFakeMCQData();
+        
+        // Create and display MCQ analysis chart
+        createChart('MCQ Analysis', Object.keys(mcqData), Object.values(mcqData), 'mcq-chart');
+    }
+}
+        // Function to create a chart
+        function createChart(chartTitle, labels, data, chartId) {
+            var chartContainer = document.getElementById('charts-container');
+
+            // Create div for the chart
+            var chartDiv = document.createElement('div');
+            chartDiv.className = 'chart-container';
+            chartContainer.appendChild(chartDiv);
+
+            // Generate chart using Chart.js
+            var ctx = document.createElement('canvas');
+            ctx.id = chartId;
+            chartDiv.appendChild(ctx);
+
+            var chartData = {
+                labels: labels,
+                datasets: [{
+                    label: chartTitle,
+                    data: data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            var chartOptions = {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            };
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: chartOptions
+            });
+        }
+
+        // Call the function to create charts when the page loads
+        window.onload = createCharts;
+    </script>
+</body>
+</html>
